@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "https://sdp.suki-stage.com"
+      "url": "https://sdp.suki-stage.com/api/v1"
     }
   ],
   "paths": {
