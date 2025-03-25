@@ -1,217 +1,1294 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
+    "schemes": [],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the API Gateway for Suki Developer Platform",
+        "title": "Suki Developer Platform",
+        "contact": {},
+        "version": "1.0"
     },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+    "host": "",
+    "basePath": "",
+    "paths": {
+        "/api/auth/.well-known/jwks-pub.json": {
+            "get": {
+                "description": "Returns the public key for the service",
+                "tags": [
+                    "/api/auth"
+                ],
+                "summary": "Well-known JWKS endpoint",
+                "responses": {
+                    "200": {
+                        "description": "public key for the service",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.PublicKeyData"
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
         },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
+        "/api/v1/ambient/content/{ambient_session_id}": {
+            "get": {
+                "description": "Gets the content for the ambient session.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient"
+                ],
+                "summary": "Gets the content for the ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ContentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+        },
+        "/api/v1/ambient/encounter/{encounter_id}/content": {
+            "get": {
+                "description": "Gets the cumulative summary and structured data associated with the specified encounter.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/encounter"
+                ],
+                "summary": "Gets the content for the encounter.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "encounter_id",
+                        "name": "encounter_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.EncounterContentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
                 }
-              }
             }
-          }
+        },
+        "/api/v1/ambient/session/create": {
+            "post": {
+                "description": "Creates an ambient session.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/session"
+                ],
+                "summary": "Creates an ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "CreateSessionRequest",
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.CreateSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.CreateSessionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ambient/session/{ambient_session_id}/content": {
+            "get": {
+                "description": "Gets the summary and structured data associated with the specified ambient session.\nQuery Param **cumulative** ( Optional , If the query param is not provided, the default value is false ) :\n* **true**  : cumulative summary and structured data upto the specified ambient session is retrieved.\n* **false** : snapshot summary and structured data for the specified ambient session is retrieved.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/session"
+                ],
+                "summary": "Gets the content for the ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "cumulative",
+                        "name": "cumulative",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SessionContentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ambient/session/{ambient_session_id}/end": {
+            "post": {
+                "description": "Ends ambient session post streaming audio.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/session"
+                ],
+                "summary": "Ends ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ambient/session/{ambient_session_id}/metadata": {
+            "post": {
+                "description": "Seeds metadata for the ambient session.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/session"
+                ],
+                "summary": "Seeds metadata for the ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Metadata",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SessionMetadata"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ambient/session/{ambient_session_id}/status": {
+            "get": {
+                "description": "**created** \t: \tambient session has been created but not yet started\n**ready**\t\t: \tambient session has been started\n**running**\t\t:\tambient session is in process of generating content\n**paused**\t\t:\tambient session is paused\n**aborted**\t\t:\tambient session has been aborted by the client\n**failed**\t\t:\tambient session failed due to an error\n**completed**\t:\tambient session completed successfully",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/session"
+                ],
+                "summary": "Gets the status of the ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.StatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ambient/session/{ambient_session_id}/transcript": {
+            "get": {
+                "description": "Gets the completed transcripts for the ambient session.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/ambient/session"
+                ],
+                "summary": "Gets the completed transcripts for the ambient session.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.CompletedTranscriptResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "description": "Authenticates a user and returns a suki token which can be used to access other APIs.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/auth"
+                ],
+                "summary": "Authenticates user.",
+                "parameters": [
+                    {
+                        "description": "AuthenticationRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.AuthenticationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.AuthenticationResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "description": "Registers a new user to the SDP database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/api/v1/auth"
+                ],
+                "summary": "Registers a user.",
+                "parameters": [
+                    {
+                        "description": "RegistrationRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.RegistrationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success Response"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/webhooks/notification": {
+            "post": {
+                "description": "Following defines the specification to which the webhook endpoint, hosted to receive notifications, must conform to.\nIt outlines the structure of the notification that the webhook should handle in case of generation success or failure.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/webhooks"
+                ],
+                "summary": "Spec of webhook to be hosted by External Partners.",
+                "parameters": [
+                    {
+                        "description": "SuccessNotification",
+                        "name": "success",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.SuccessNotification"
+                        }
+                    },
+                    {
+                        "description": "FailureNotification",
+                        "name": "failure",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.FailureNotification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/ws/stream": {
+            "get": {
+                "description": "Streams audio to the speech service.",
+                "consumes": [
+                    "application/octet-stream"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/ws"
+                ],
+                "summary": "Streams audio to the speech service.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sdp_suki_token",
+                        "name": "sdp_suki_token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ambient_session_id",
+                        "name": "ambient_session_id",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
-      }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
+    "definitions": {
+        "controllers.AuthenticationRequest": {
+            "description": "Request body for the /auth/login endpoint",
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+                "partner_id": {
+                    "description": "(*Required) Unique identifier for the partner. This will be shared securely by Suki to the partner through a separate partner registration process.",
+                    "type": "string"
+                },
+                "partner_token": {
+                    "description": "(*Required) JWT token issued by trusted authorization server. The token must include Provider Email.",
+                    "type": "string"
+                }
             }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
+        },
+        "controllers.AuthenticationResponse": {
+            "description": "Response received after authenticating user",
+            "type": "object",
+            "properties": {
+                "suki_token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                }
+            }
+        },
+        "controllers.CompletedTranscript": {
+            "description": "Transcript for an audio chunk",
+            "type": "object",
+            "properties": {
+                "end_offset": {
+                    "description": "Ending time of each transcript segment relative to the beginning of the audio or context in which it appears.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/controllers.Offset"
+                        }
+                    ]
+                },
+                "end_time": {
+                    "description": "End Time of the transcript. ( JSON Mapping for https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/timestamp.proto )",
+                    "type": "string",
+                    "example": "2024-12-04T09:40:48.792948332Z"
+                },
+                "recording_id": {
+                    "description": "Recording ID associated with the transcript.",
+                    "type": "string",
+                    "example": "c9d59aa8-cd48-4f5a-be81-5d0c9d2a5885"
+                },
+                "start_offset": {
+                    "description": "Starting time of each transcript segment relative to the beginning of the audio or context in which it appears.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/controllers.Offset"
+                        }
+                    ]
+                },
+                "start_time": {
+                    "description": "Start Time of the transcript. ( JSON Mapping for https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/timestamp.proto )",
+                    "type": "string",
+                    "example": "2024-12-04T09:40:42.393948332Z"
+                },
+                "transcript": {
+                    "description": "Transcript for an audio chunk.",
+                    "type": "string",
+                    "example": "The patient has shown an allergy to pollen"
+                },
+                "transcript_id": {
+                    "description": "Sortable ULID for each transcript.",
+                    "type": "string",
+                    "example": "01JE8GP4RTHH0KDEGRSTRVPMGH"
+                }
+            }
+        },
+        "controllers.CompletedTranscriptResponse": {
+            "description": "Response body for the /session/{ambient_session_id}/transcript endpoint",
+            "type": "object",
+            "properties": {
+                "final_transcript": {
+                    "description": "Collection of transcripts for the ambient session",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.CompletedTranscript"
+                    }
+                }
+            }
+        },
+        "controllers.Content": {
+            "description": "Generated content for the session",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "example": "Asthma exacerbation"
+                },
+                "loinc_code": {
+                    "type": "string",
+                    "example": "18776-5"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Assessment and Plan"
+                }
+            }
+        },
+        "controllers.ContentBlock": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "The body of the content block usually refers to the content of the section.",
+                    "type": "string",
+                    "example": "Asthma exacerbation"
+                },
+                "loinc_code": {
+                    "description": "The LOINC code of the content block.",
+                    "type": "string",
+                    "example": "18776-5"
+                },
+                "source_transcripts": {
+                    "description": "The source transcripts that were used to generate the content block.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "asthma",
+                        "exacerbation"
+                    ]
+                },
+                "title": {
+                    "description": "The title of the content block usually refers to section name.",
+                    "type": "string",
+                    "example": "Assessment and Plan"
+                }
+            }
+        },
+        "controllers.ContentResponse": {
+            "description": "Response body for the /content/{ambient_session_id} endpoint",
+            "type": "object",
+            "properties": {
+                "contents": {
+                    "description": "Content for the ambient session",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Content"
+                    }
+                }
+            }
+        },
+        "controllers.CreateSessionRequest": {
+            "description": "Request body for the /session/create endpoint",
+            "type": "object",
+            "properties": {
+                "ambient_session_id": {
+                    "description": "(Optional) UUID format",
+                    "type": "string",
+                    "example": "123dfg-456dfg-789dfg-012dfg"
+                },
+                "encounter_id": {
+                    "description": "(Optional) UUID format",
+                    "type": "string",
+                    "example": "123dfg-456dfg-789dfg-012dfg"
+                }
+            }
+        },
+        "controllers.CreateSessionResponse": {
+            "description": "Response body for the /session/create endpoint",
+            "type": "object",
+            "properties": {
+                "ambient_session_id": {
+                    "type": "string",
+                    "example": "123dfg-456dfg-789dfg-012dfg"
+                }
+            }
+        },
+        "controllers.EncounterContentResponse": {
+            "description": "Response body for the /encounter/{encounter_id}/content endpoint",
+            "type": "object",
+            "properties": {
+                "structured_data": {
+                    "description": "Structured data extracted from the encounter",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.StructuredDataBlock"
+                    }
+                },
+                "summary": {
+                    "description": "Cumulative summary of the encounter",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.ContentBlock"
+                    }
+                }
+            }
+        },
+        "controllers.Error": {
+            "description": "Failure Response",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 401
+                },
+                "message": {
+                    "type": "string",
+                    "example": "invalid token"
+                }
+            }
+        },
+        "controllers.FailureNotification": {
+            "type": "object",
+            "properties": {
+                "encounter_id": {
+                    "description": "Id of the encounter to which the payload belongs.",
+                    "type": "string",
+                    "example": "29de56bc-960a-4cd5-b18f-79a798d62874"
+                },
+                "error_code": {
+                    "description": "Error code.",
+                    "type": "string",
+                    "example": "ERROR_CODE_TRANSCRIPTION"
+                },
+                "error_detail": {
+                    "description": "Details of the error, if any.",
+                    "type": "string",
+                    "example": "Error in transcription"
+                },
+                "session_id": {
+                    "description": "Id of the session that failed.",
+                    "type": "string",
+                    "example": "20965414-929a-4f71-a3e5-b92bec07d086"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "failure"
+                }
+            }
+        },
+        "controllers.KeyData": {
+            "description": "Each property in the key is defined by the JWK specification https://datatracker.ietf.org/doc/html/rfc7517#section-4 or, for algorithm-specific properties, in https://tools.ietf.org/html/rfc7518",
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "description": "The specific cryptographic algorithm used with the key.",
+                    "type": "string",
+                    "example": "RS256"
+                },
+                "e": {
+                    "description": "The exponent for the RSA public key : https://tools.ietf.org/html/rfc7518#page-30",
+                    "type": "string",
+                    "example": "AQAB"
+                },
+                "kid": {
+                    "description": "The unique identifier for the key.",
+                    "type": "string",
+                    "example": "sdp-pub"
+                },
+                "kty": {
+                    "description": "The family of cryptographic algorithms used with the key.",
+                    "type": "string",
+                    "example": "RSA"
+                },
+                "n": {
+                    "description": "The modulus for the RSA public key : https://tools.ietf.org/html/rfc7518#page-30",
+                    "type": "string",
+                    "example": "yeNlzlub94YgerT030codqEztjfU_S6X4DbDA_iVKkjAWtYfPHDzz_sPCT1Axz6isZdf3lHpq_gYX4Sz-cbe4rjmigxUxr-FgKHQy3HeCdK6hNq9ASQvMK9LBOpXDNn7mei6RZWom4wo3CMvvsY1w8tjtfLb-yQwJPltHxShZq5-ihC9irpLI9xEBTgG12q5lGIFPhTl_7inA1PFK97LuSLnTJzW0bj096v_TMDg7pOWm_zHtF53qbVsI0e3v5nmdKXdFf9BjIARRfVrbxVxiZHjU6zL6jY5QJdh1QCmENoejj_ytspMmGW7yMRxzUqgxcAqOBpVm0b-_mW3HoBdjQ"
+                },
+                "use": {
+                    "description": "How the key was meant to be used; sig represents the signature.",
+                    "type": "string",
+                    "example": "sig"
+                }
+            }
+        },
+        "controllers.Link": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "type": "string",
+                    "example": "/path/to/resource"
+                },
+                "method": {
+                    "type": "string",
+                    "example": "GET"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "name"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "application/json"
+                }
+            }
+        },
+        "controllers.Links": {
+            "type": "object",
+            "properties": {
+                "contents": {
+                    "description": "Links to non-cumulative content for each session so far for the encounter.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Link"
+                    }
+                },
+                "encounter_content": {
+                    "description": "Link to cumulative content for the encounter.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Link"
+                    }
+                },
+                "status": {
+                    "description": "Links to status of each session so far for the encounter.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Link"
+                    }
+                },
+                "transcripts": {
+                    "description": "Links to the transcripts of each session so far for the encounter.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Link"
+                    }
+                }
+            }
+        },
+        "controllers.NoteSection": {
+            "description": "Note section definition",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "The main reason for the visit"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Chief Complaint"
+                }
+            }
+        },
+        "controllers.Offset": {
+            "type": "object",
+            "properties": {
+                "hours": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "minutes": {
+                    "type": "integer",
+                    "example": 6
+                },
+                "nanos": {
+                    "type": "integer",
+                    "example": 80000000
+                },
+                "seconds": {
+                    "type": "integer",
+                    "example": 42
+                }
+            }
+        },
+        "controllers.PublicKeyData": {
+            "description": "JSON Web Key Sets",
+            "type": "object",
+            "properties": {
+                "keys": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.KeyData"
+                    }
+                }
+            }
+        },
+        "controllers.RegistrationRequest": {
+            "description": "Request body for the /auth/register endpoint",
+            "type": "object",
+            "properties": {
+                "partner_id": {
+                    "description": "(*Required) Unique identifier for the partner. This will be shared securely by Suki to the partner through a separate partner registration process.",
+                    "type": "string"
+                },
+                "partner_token": {
+                    "description": "(*Required) JWT token issued by trusted authorization server. The token must include Provider Email.",
+                    "type": "string"
+                },
+                "provider_name": {
+                    "description": "(*Required) Name of the provider.",
+                    "type": "string"
+                },
+                "provider_org_id": {
+                    "description": "(*Required) Health system or organization to which the provider belongs.",
+                    "type": "string"
+                },
+                "provider_specialty": {
+                    "description": "(Optional) Medical specialty of the provider. Defaults to FAMILY_MEDICINE if not provided.",
+                    "type": "string",
+                    "example": "CARDIOLOGY"
+                }
+            }
+        },
+        "controllers.SessionContentResponse": {
+            "description": "Response body for the /session/{ambient_session_id}/content endpoint",
+            "type": "object",
+            "properties": {
+                "structured_data": {
+                    "description": "Structured data extracted from the ambient session.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.StructuredDataBlock"
+                    }
+                },
+                "summary": {
+                    "description": "Summary of the ambient session.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.ContentBlock"
+                    }
+                }
+            }
+        },
+        "controllers.SessionMetadata": {
+            "description": "Request body for the /session/{ambient_session_id}/metadata endpoint",
+            "type": "object",
+            "properties": {
+                "note_sections": {
+                    "description": "(Optional) Default note sections used if not provided",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.NoteSection"
+                    }
+                },
+                "patient_dob": {
+                    "description": "(Optional) {YYYY-MM-DD}",
+                    "type": "string",
+                    "example": "2000-01-01"
+                },
+                "patient_sex": {
+                    "description": "(Optional)",
+                    "type": "string",
+                    "enum": [
+                        "male",
+                        "female",
+                        "other",
+                        "unknown"
+                    ],
+                    "example": "male"
+                },
+                "provider_specialty": {
+                    "description": "(Optional) Defaults to FAMILY_MEDICINE if not provided",
+                    "type": "string",
+                    "example": "CARDIOLOGY"
+                }
+            }
+        },
+        "controllers.StatusResponse": {
+            "description": "Response body for the /session/{ambient_session_id}/status endpoint",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "status of the ambient session",
+                    "type": "string",
+                    "enum": [
+                        "created",
+                        "ready",
+                        "running",
+                        "paused",
+                        "aborted",
+                        "failed",
+                        "completed"
+                    ],
+                    "example": "completed"
+                }
+            }
+        },
+        "controllers.StructuredDataBlock": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "The structured data in the block. This is a key-value pair where the key is the name of the data and the value is the data itself.\nFor example, for medications, the key can be the name of the medication and the value can be the dosage.\nThis is kept as map since we don't know the structure of the data that will be extracted.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "dosage": "2 puffs",
+                        "medication": "albuterol"
+                    }
+                },
+                "title": {
+                    "description": "The title of the structured data block. Usually refers to names like Medications, Allergies, etc.",
+                    "type": "string",
+                    "example": "Medications"
+                }
+            }
+        },
+        "controllers.SuccessNotification": {
+            "type": "object",
+            "properties": {
+                "_links": {
+                    "description": "Links to associated resources.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/controllers.Links"
+                        }
+                    ]
+                },
+                "additional_info": {
+                    "description": "Any Additional information about the notification.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "priority": "high"
+                    }
+                },
+                "encounter_id": {
+                    "description": "Id of the encounter to which the payload belongs.",
+                    "type": "string",
+                    "example": "4d753ce1-bbff-43e1-950a-82dea2d86873"
+                },
+                "session_id": {
+                    "description": "Id of the session for which the notification is being sent.",
+                    "type": "string",
+                    "example": "a953839a-ddcd-407d-b9b0-3ed4b6be4be2"
+                },
+                "sessions": {
+                    "description": "Sorted list of sessions that occured within an encounter in the order of\noccurence.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "20965414-929a-4f71-a3e5-b92bec07d086",
+                        "29de56bc-960a-4cd5-b18f-79a798d62874"
+                    ]
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
     }
-  }
 }
