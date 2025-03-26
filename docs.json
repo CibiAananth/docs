@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Suki for developers",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -73,7 +73,31 @@
           "icon": "newspaper"
         }
       ]
+    },
+    "dropdowns": [
+    {
+      "dropdown": "Documentation",
+      "icon": "book-open",
+      "pages": [
+        "quickstart",
+        "development",
+        "navigation"
+      ]
     }
+    {
+      "dropdown": "API References",
+      "icon": "sqaure-terminal",
+      "pages": [
+        "api-reference/get",
+        "api-reference/post",
+        "api-reference/delete"
+      ]
+    }
+    {
+      "dropdown": "Blog",
+      "href": "https://external-link.com/blog"
+    }
+  ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -83,20 +107,14 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@suki.ai"
       }
     ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/SukiHQ",
+      "linkedin": "https://www.linkedin.com/company/sukihq"
     }
   }
 }
