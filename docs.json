@@ -15,11 +15,7 @@
         "groups": [
           {
             "group": "Get Started",
-            "pages": [
-              "introduction",
-              "quickstart",
-              "development"
-            ]
+            "pages": ["introduction", "quickstart", "development"]
           },
           {
             "group": "Essentials",
@@ -39,9 +35,7 @@
         "groups": [
           {
             "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           },
           {
             "group": "Endpoint Examples",
@@ -75,29 +69,25 @@
       ]
     },
     "dropdowns": [
-    {
-      "dropdown": "Documentation",
-      "icon": "book-open",
-      "pages": [
-        "quickstart",
-        "development",
-        "navigation"
-      ]
-    },
-    {
-      "dropdown": "API References",
-      "icon": "sqaure-terminal",
-      "pages": [
-        "api-reference/get",
-        "api-reference/post",
-        "api-reference/delete"
-      ]
-    },
-    {
-      "dropdown": "Blog",
-      "href": "https://external-link.com/blog"
-    }
-  ]
+      {
+        "dropdown": "Documentation",
+        "icon": "book-open",
+        "pages": ["quickstart", "development", "navigation"]
+      },
+      {
+        "dropdown": "API References",
+        "icon": "sqaure-terminal",
+        "pages": [
+          "api-reference/get",
+          "api-reference/post",
+          "api-reference/delete"
+        ]
+      },
+      {
+        "dropdown": "Blog",
+        "href": "https://external-link.com/blog"
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -109,7 +99,7 @@
         "label": "Support",
         "href": "mailto:support@suki.ai"
       }
-    ],
+    ]
   },
   "footer": {
     "socials": {

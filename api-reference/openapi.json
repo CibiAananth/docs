@@ -8,15 +8,13 @@
   },
   "servers": [
     {
-      "url": "https://sdp.suki-stage.com/api/v1"
+      "url": "https://sdp.suki-stage.com"
     }
   ],
   "paths": {
     "/api/auth/.well-known/jwks-pub.json": {
       "get": {
-        "tags": [
-          "/api/auth"
-        ],
+        "tags": ["/api/auth"],
         "summary": "Well-known JWKS endpoint",
         "description": "Returns the public key for the service",
         "responses": {
@@ -35,9 +33,7 @@
     },
     "/api/v1/ambient/content/{ambient_session_id}": {
       "get": {
-        "tags": [
-          "/api/v1/ambient"
-        ],
+        "tags": ["/api/v1/ambient"],
         "summary": "Gets the content for the ambient session.",
         "description": "Gets the content for the ambient session.",
         "parameters": [
@@ -116,9 +112,7 @@
     },
     "/api/v1/ambient/encounter/{encounter_id}/content": {
       "get": {
-        "tags": [
-          "/api/v1/ambient/encounter"
-        ],
+        "tags": ["/api/v1/ambient/encounter"],
         "summary": "Gets the content for the encounter.",
         "description": "Gets the cumulative summary and structured data associated with the specified encounter.",
         "parameters": [
@@ -187,9 +181,7 @@
     },
     "/api/v1/ambient/session/create": {
       "post": {
-        "tags": [
-          "/api/v1/ambient/session"
-        ],
+        "tags": ["/api/v1/ambient/session"],
         "summary": "Creates an ambient session.",
         "description": "Creates an ambient session.",
         "parameters": [
@@ -261,9 +253,7 @@
     },
     "/api/v1/ambient/session/{ambient_session_id}/content": {
       "get": {
-        "tags": [
-          "/api/v1/ambient/session"
-        ],
+        "tags": ["/api/v1/ambient/session"],
         "summary": "Gets the content for the ambient session.",
         "description": "Gets the summary and structured data associated with the specified ambient session.\nQuery Param **cumulative** ( Optional , If the query param is not provided, the default value is false ) :\n* **true**  : cumulative summary and structured data upto the specified ambient session is retrieved.\n* **false** : snapshot summary and structured data for the specified ambient session is retrieved.",
         "parameters": [
@@ -340,9 +330,7 @@
     },
     "/api/v1/ambient/session/{ambient_session_id}/end": {
       "post": {
-        "tags": [
-          "/api/v1/ambient/session"
-        ],
+        "tags": ["/api/v1/ambient/session"],
         "summary": "Ends ambient session.",
         "description": "Ends ambient session post streaming audio.",
         "parameters": [
@@ -415,9 +403,7 @@
     },
     "/api/v1/ambient/session/{ambient_session_id}/metadata": {
       "post": {
-        "tags": [
-          "/api/v1/ambient/session"
-        ],
+        "tags": ["/api/v1/ambient/session"],
         "summary": "Seeds metadata for the ambient session.",
         "description": "Seeds metadata for the ambient session.",
         "parameters": [
@@ -512,9 +498,7 @@
     },
     "/api/v1/ambient/session/{ambient_session_id}/status": {
       "get": {
-        "tags": [
-          "/api/v1/ambient/session"
-        ],
+        "tags": ["/api/v1/ambient/session"],
         "summary": "Gets the status of the ambient session.",
         "description": "**created** \t: \tambient session has been created but not yet started\n**ready**\t\t: \tambient session has been started\n**running**\t\t:\tambient session is in process of generating content\n**paused**\t\t:\tambient session is paused\n**aborted**\t\t:\tambient session has been aborted by the client\n**failed**\t\t:\tambient session failed due to an error\n**completed**\t:\tambient session completed successfully",
         "parameters": [
@@ -593,9 +577,7 @@
     },
     "/api/v1/ambient/session/{ambient_session_id}/transcript": {
       "get": {
-        "tags": [
-          "/api/v1/ambient/session"
-        ],
+        "tags": ["/api/v1/ambient/session"],
         "summary": "Gets the completed transcripts for the ambient session.",
         "description": "Gets the completed transcripts for the ambient session.",
         "parameters": [
@@ -674,9 +656,7 @@
     },
     "/api/v1/auth/login": {
       "post": {
-        "tags": [
-          "/api/v1/auth"
-        ],
+        "tags": ["/api/v1/auth"],
         "summary": "Authenticates user.",
         "description": "Authenticates a user and returns a suki token which can be used to access other APIs.",
         "requestBody": {
@@ -737,9 +717,7 @@
     },
     "/api/v1/auth/register": {
       "post": {
-        "tags": [
-          "/api/v1/auth"
-        ],
+        "tags": ["/api/v1/auth"],
         "summary": "Registers a user.",
         "description": "Registers a new user to the SDP database.",
         "requestBody": {
@@ -814,9 +792,7 @@
     },
     "/webhooks/notification": {
       "post": {
-        "tags": [
-          "/webhooks"
-        ],
+        "tags": ["/webhooks"],
         "summary": "Spec of webhook to be hosted by External Partners.",
         "description": "Following defines the specification to which the webhook endpoint, hosted to receive notifications, must conform to.\nIt outlines the structure of the notification that the webhook should handle in case of generation success or failure.",
         "requestBody": {
@@ -871,9 +847,7 @@
     },
     "/ws/stream": {
       "get": {
-        "tags": [
-          "/ws"
-        ],
+        "tags": ["/ws"],
         "summary": "Streams audio to the speech service.",
         "description": "Streams audio to the speech service.",
         "parameters": [
@@ -1053,10 +1027,7 @@
           "source_transcripts": {
             "type": "array",
             "description": "The source transcripts that were used to generate the content block.",
-            "example": [
-              "asthma",
-              "exacerbation"
-            ],
+            "example": ["asthma", "exacerbation"],
             "items": {
               "type": "string"
             }
@@ -1373,12 +1344,7 @@
             "type": "string",
             "description": "(Optional)",
             "example": "male",
-            "enum": [
-              "male",
-              "female",
-              "other",
-              "unknown"
-            ]
+            "enum": ["male", "female", "other", "unknown"]
           },
           "provider_specialty": {
             "type": "string",
